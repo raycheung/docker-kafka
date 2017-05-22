@@ -3,7 +3,7 @@ Apache Kafka on Docker
 
 This repository holds a build definition and supporting files for building a
 [Docker] image to run [Kafka] in containers. It is published as an Automated
-Build [on the Docker registry], as `ches/kafka`.
+Build [on Docker Hub], as `ches/kafka`.
 
 This build intends to provide an operator-friendly Kafka deployment suitable for
 usage in a production Docker environment:
@@ -28,23 +28,23 @@ using the container as a client to run the basic producer and consumer example
 from [the Kafka Quick Start]:
 
 ```
-$ docker run -d --name zookeeper jplock/zookeeper:3.4.6
-$ docker run -d --name kafka --link zookeeper:zookeeper ches/kafka
+# A non-default bridge network enables convenient name-to-hostname discovery
+$ docker network create kafka-net
 
-$ ZK_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' zookeeper)
-$ KAFKA_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' kafka)
+$ docker run -d --name zookeeper --network kafka-net zookeeper:3.4
+$ docker run -d --name kafka --network kafka-net --env ZOOKEEPER_IP=zookeeper ches/kafka
 
-$ docker run --rm ches/kafka \
->   kafka-topics.sh --create --topic test --replication-factor 1 --partitions 1 --zookeeper $ZK_IP:2181
+$ docker run --rm --network kafka-net ches/kafka \
+>   kafka-topics.sh --create --topic test --replication-factor 1 --partitions 1 --zookeeper zookeeper:2181
 Created topic "test".
 
 # In separate terminals:
-$ docker run --rm --interactive ches/kafka \
->   kafka-console-producer.sh --topic test --broker-list $KAFKA_IP:9092
+$ docker run --rm --interactive --network kafka-net ches/kafka \
+>   kafka-console-producer.sh --topic test --broker-list kafka:9092
 <type some messages followed by newline>
 
-$ docker run --rm ches/kafka \
->   kafka-console-consumer.sh --topic test --from-beginning --zookeeper $ZK_IP:2181
+$ docker run --rm --network kafka-net ches/kafka \
+>   kafka-console-consumer.sh --topic test --from-beginning --bootstrap-server kafka:9092
 ```
 
 ### Volumes
@@ -81,7 +81,7 @@ boot2docker, substitute the value of `boot2docker ip` below.
 
 ```bash
 $ mkdir -p kafka-ex/{data,logs} && cd kafka-ex
-$ docker run -d --name zookeeper --publish 2181:2181 jplock/zookeeper:3.4.6
+$ docker run -d --name zookeeper --publish 2181:2181 zookeeper:3.4
 $ docker run -d \
     --hostname localhost \
     --name kafka \
@@ -121,6 +121,22 @@ with their default values, if any:
   `advertised.port` setting. If you run multiple broker containers on a single
   Docker host and need them to be accessible externally, this should be set to
   the port that you forward to on the Docker host.
+- `KAFKA_DEFAULT_REPLICATION_FACTOR=1`
+
+  Maps to Kafka's `default.replication.factor` setting. The default replication
+  factor for automatically created topics.
+- `KAFKA_AUTO_CREATE_TOPICS_ENABLE=true`
+
+  Maps to Kafka's `auto.create.topics.enable`.
+- `KAFKA_INTER_BROKER_PROTOCOL_VERSION`
+
+  Maps to Kafka's `inter.broker.protocol.version`. If you have a cluster that
+  runs brokers with different Kafka versions make sure they communicate with
+  the same protocol version.
+- `KAFKA_LOG_MESSAGE_FORMAT_VERSION`
+
+  Maps to Kafka's `log.message.format.version`. Specifies the protocol version
+  with which your cluster communicates with its consumers.
 - `JAVA_RMI_SERVER_HOSTNAME=$KAFKA_ADVERTISED_HOST_NAME`
 
   Maps to the `java.rmi.server.hostname` JVM property, which is used to bind the
@@ -148,18 +164,6 @@ with their default values, if any:
   accommodate Kafka upgrades that change schema. Starting in Kafka 0.8.2, it
   will create the path in ZK automatically; with earlier versions, you must
   ensure it is created before starting brokers.
-- `INTER_BROKER_PROTOCOL_VERSION`
-
-  Maps Kafka's `inter.broker.protocol.version`. If you have a cluster that
-	runs brokers with different Kafka versions make sure they communicate with 
-	the same protocol version.
-- `LOG_MESSAGE_FORMAT_VERSION`
-
-  Maps Kafka's `log.message.format.version`. Specifies the protocol version
-	with which your cluster communicates with it's consumers.
-- `AUTO_CREATE_TOPICS`
-
-  Maps Kafka's `auto.create.topics.enable`. Default is set to false.
 
 JMX
 ---
@@ -183,7 +187,7 @@ your host OS to `$(docker-machine ip docker-vm):7203`:
         --env JAVA_RMI_SERVER_HOSTNAME=$(docker-machine ip docker-vm) \
         ches/kafka
 
-Note that it is fussy about port as well---it may not work if the same port
+Note that it is fussy about port as well—it may not work if the same port
 number is not used within the container and on the host (any advice for
 workarounds is welcome).
 
@@ -196,7 +200,7 @@ setting would be to run a metrics collector in another container, and link it to
 the Kafka container(s).
 
 If you need finer-grained configuration, you can totally control the relevant
-Java system properties by setting `KAFKA_JMX_OPTS` yourself---see `start.sh`.
+Java system properties by setting `KAFKA_JMX_OPTS` yourself—see `start.sh`.
 
 Fork Legacy
 -----------
@@ -217,7 +221,7 @@ project's changelog file describes these in detail.
 
 [Docker]: http://www.docker.io
 [Kafka]: http://kafka.apache.org
-[on the Docker registry]: https://registry.hub.docker.com/u/ches/kafka/
+[on Docker Hub]: https://hub.docker.com/r/ches/kafka/
 [relateiq/kafka]: https://github.com/relateiq/docker-kafka
 [the Kafka Quick Start]: http://kafka.apache.org/documentation.html#quickstart
 

@@ -1,12 +1,24 @@
+Release Notes
+=============
+
 ## latest - Unreleased
 
 No changes yet.
 
-## 0.10.2.0 - 30 March, 2017
+## 0.10.2.0 - 31 March, 2017
 
-- Update to Kafka 0.10.2.0
-- Support setting properties for log message and inter broker protocol version
-- Set auto create with environment variable
+- Update to Kafka 0.10.2.0 ([bgaechter], #39)
+- Switch to Scala 2.12 builds as now recommended by Kafka.
+- Change config var `GROUP_MAX_SESSION_TIMEOUT_MS` to
+  `KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS` for consistency.
+- Allow configuration of `auto.create.topics.enable`,
+  `inter.broker.protocol.version`, and `log.message.format.version`
+  ([bgaechter], #39)
+
+## 0.10.1.1 - 31 March, 2017
+
+- Update to Kafka 0.10.1.1
+- Allow configuration of `default.replication.factor` ([sjking], #32)
 
 ## 0.10.1.0 - 27 October, 2016
 
@@ -66,7 +78,9 @@ Initial build with Kafka 0.8.1.1 from official binary distribution.
 
 
 [androa]: https://github.com/androa
+[bgaechter]: https://github.com/bgaechter
 [closedLoop]: https://github.com/closedLoop
 [davidgiesberg]: https://github.com/davidgiesberg
 [Jamstah]: https://github.com/Jamstah
+[sjking]: https://github.com/sjking
 [xrl]: https://github.com/xrl

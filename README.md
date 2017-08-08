@@ -132,6 +132,9 @@ with their default values, if any:
 - `KAFKA_AUTO_CREATE_TOPICS_ENABLE=true`
 
   Maps to Kafka's `auto.create.topics.enable`.
+- `KAFKA_DELETE_TOPIC_ENABLE=false`
+
+  Maps to Kafkas `delete.topic.enable`.
 - `KAFKA_INTER_BROKER_PROTOCOL_VERSION`
 
   Maps to Kafka's `inter.broker.protocol.version`. If you have a cluster that

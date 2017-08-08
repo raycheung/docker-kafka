@@ -46,7 +46,7 @@ log.dirs=/data
 
 # The number of logical partitions per topic per server. More partitions allow greater parallelism
 # for consumption, but also mean more files.
-num.partitions=1
+num.partitions={{KAFKA_NUM_PARTITIONS}}
 
 ############################# Log Retention Policy #############################
 
@@ -56,7 +56,7 @@ num.partitions=1
 # from the end of the log.
 
 # The minimum age of a log file to be eligible for deletion
-log.retention.hours=168
+log.retention.hours={{KAFKA_LOG_RETENTION_HOURS}}
 
 ############################# Zookeeper #############################
 

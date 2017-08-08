@@ -125,6 +125,10 @@ with their default values, if any:
 
   Maps to Kafka's `default.replication.factor` setting. The default replication
   factor for automatically created topics.
+- `KAFKA_NUM_PARTITIONS=1`
+
+  Maps to Kafka's `num.partitions` setting. The default number of log partitions
+  per topic.
 - `KAFKA_AUTO_CREATE_TOPICS_ENABLE=true`
 
   Maps to Kafka's `auto.create.topics.enable`.
@@ -137,6 +141,10 @@ with their default values, if any:
 
   Maps to Kafka's `log.message.format.version`. Specifies the protocol version
   with which your cluster communicates with its consumers.
+- `KAFKA_LOG_RETENTION_HOURS=168`
+
+  Maps to Kafka's `log.retention.hours`. The number of hours to keep a log file
+  before deleting it.
 - `JAVA_RMI_SERVER_HOSTNAME=$KAFKA_ADVERTISED_HOST_NAME`
 
   Maps to the `java.rmi.server.hostname` JVM property, which is used to bind the

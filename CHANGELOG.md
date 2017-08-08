@@ -1,9 +1,24 @@
 Release Notes
 =============
 
-## latest - Unreleased
+## latest - running releases of `latest` tag
 
 No changes yet.
+
+## 0.10.2.1 - 12 June, 2017
+
+### Added
+
+- Allow configuration of `num.partitions` ([sjking], #40)
+- Allow configuration of `log.retention.hours` (#42)
+
+### Changed
+
+- Update to Kafka 0.10.2.1
+
+### Fixed
+
+- Fixed incorrect variable name substitution for `KAFKA_AUTO_CREATE_TOPICS_ENABLE` (#43)
 
 ## 0.10.2.0 - 31 March, 2017
 

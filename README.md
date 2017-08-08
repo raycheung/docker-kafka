@@ -3,7 +3,7 @@ Apache Kafka on Docker
 
 This repository holds a build definition and supporting files for building a
 [Docker] image to run [Kafka] in containers. It is published as an Automated
-Build [on Docker Hub], as `ches/kafka`.
+Build [on Docker Hub], as `bgaechter/kafka`.
 
 This build intends to provide an operator-friendly Kafka deployment suitable for
 usage in a production Docker environment:
@@ -232,7 +232,7 @@ project's changelog file describes these in detail.
 
 [Docker]: http://www.docker.io
 [Kafka]: http://kafka.apache.org
-[on Docker Hub]: https://hub.docker.com/r/ches/kafka/
+[on Docker Hub]: https://hub.docker.com/r/bgaechter/kafka/
 [relateiq/kafka]: https://github.com/relateiq/docker-kafka
 [the Kafka Quick Start]: http://kafka.apache.org/documentation.html#quickstart
 

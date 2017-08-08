@@ -5,6 +5,12 @@ Release Notes
 
 No changes yet.
 
+## 0.11.0.0 - 8 August, 2017
+
+### Changed
+
+- Update to Kafka 0.11.0.0
+
 ## 0.10.2.1 - 12 June, 2017
 
 ### Added

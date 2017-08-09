@@ -5,7 +5,17 @@ Release Notes
 
 No changes yet.
 
+## 0.11.0.0-1 - 9 August, 2017
+
+### Changed
+
+- Switch from netflixoss/java to official java
+
 ## 0.11.0.0 - 8 August, 2017
+
+### Added
+
+- Allow configuration of `delete.topic.enable`
 
 ### Changed
 

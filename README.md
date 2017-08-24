@@ -32,18 +32,18 @@ from [the Kafka Quick Start]:
 $ docker network create kafka-net
 
 $ docker run -d --name zookeeper --network kafka-net zookeeper:3.4
-$ docker run -d --name kafka --network kafka-net --env ZOOKEEPER_IP=zookeeper ches/kafka
+$ docker run -d --name kafka --network kafka-net --env ZOOKEEPER_IP=zookeeper bgaechter/kafka
 
-$ docker run --rm --network kafka-net ches/kafka \
+$ docker run --rm --network kafka-net bgaechter/kafka \
 >   kafka-topics.sh --create --topic test --replication-factor 1 --partitions 1 --zookeeper zookeeper:2181
 Created topic "test".
 
 # In separate terminals:
-$ docker run --rm --interactive --network kafka-net ches/kafka \
+$ docker run --rm --interactive --network kafka-net bgaechter/kafka \
 >   kafka-console-producer.sh --topic test --broker-list kafka:9092
 <type some messages followed by newline>
 
-$ docker run --rm --network kafka-net ches/kafka \
+$ docker run --rm --network kafka-net bgaechter/kafka \
 >   kafka-console-consumer.sh --topic test --from-beginning --bootstrap-server kafka:9092
 ```
 
@@ -88,7 +88,7 @@ $ docker run -d \
     --volume ./data:/data --volume ./logs:/logs \
     --publish 9092:9092 --publish 7203:7203 \
     --env KAFKA_ADVERTISED_HOST_NAME=127.0.0.1 --env ZOOKEEPER_IP=127.0.0.1 \
-    ches/kafka
+    bgaechter/kafka
 ```
 
 Configuration
@@ -196,7 +196,7 @@ your host OS to `$(docker-machine ip docker-vm):7203`:
     $ docker run -d --name kafka -p 7203:7203 \
         --link zookeeper:zookeeper \
         --env JAVA_RMI_SERVER_HOSTNAME=$(docker-machine ip docker-vm) \
-        ches/kafka
+        bgaechter/kafka
 
 Note that it is fussy about port as well—it may not work if the same port
 number is not used within the container and on the host (any advice for

@@ -1,13 +1,15 @@
-FROM java:8-alpine
+FROM netflixoss/java:8
 MAINTAINER Benny Gaechter <benny.gaechter@gmail.com>
 
 # The Scala 2.12 build is currently recommended by the project.
 ENV KAFKA_VERSION=0.11.0.0 KAFKA_SCALA_VERSION=2.12 JMX_PORT=7203
 ENV KAFKA_RELEASE_ARCHIVE kafka_${KAFKA_SCALA_VERSION}-${KAFKA_VERSION}.tgz
 
-RUN mkdir /kafka /data /logs && \
-	apk update && \
-	apk add --no-cache ca-certificates busybox-suid bash wget dpkg-dev gpgme
+RUN mkdir /kafka /data /logs \
+RUN apt update && \
+  apt search ca-certificates \
+  DEBIAN_FRONTEND=noninteractive apt install -y \
+    ca-certificates
 
 # Download Kafka binary distribution
 ADD http://www.us.apache.org/dist/kafka/${KAFKA_VERSION}/${KAFKA_RELEASE_ARCHIVE} /tmp/
@@ -27,11 +29,6 @@ RUN tar -zx -C /kafka -f ${KAFKA_RELEASE_ARCHIVE} && \
 ADD config /kafka/config
 ADD start.sh /start.sh
 
-# Set up a user to run Kafka
-RUN addgroup -S kafka && \ 
-  adduser -S -h /kafka -G kafka kafka && \
-  chown -R kafka:kafka /kafka /data /logs
-USER kafka
 ENV PATH /kafka/bin:$PATH
 WORKDIR /kafka
 

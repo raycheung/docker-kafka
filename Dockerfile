@@ -14,6 +14,7 @@ ENV KAFKA_VERSION=0.10.2.1 KAFKA_SCALA_VERSION=2.12 JMX_PORT=7203
 ENV KAFKA_RELEASE_ARCHIVE kafka_${KAFKA_SCALA_VERSION}-${KAFKA_VERSION}.tgz
 
 RUN mkdir /kafka /data /logs
+RUN sed -i -e "s/#networkaddress.cache.ttl=-1/networkaddress.cache.ttl=1/g" /usr/lib/jvm/java-8-oracle/jre/lib/security/java.security
 
 RUN apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \

@@ -11,6 +11,7 @@ RUN mkdir /kafka /data /logs && \
 
 ADD http://www.us.apache.org/dist/kafka/${KAFKA_VERSION}/${KAFKA_RELEASE_ARCHIVE} /tmp/
 ADD https://dist.apache.org/repos/dist/release/kafka/${KAFKA_VERSION}/${KAFKA_RELEASE_ARCHIVE}.md5 /tmp/
+RUN sed -i -e "s/#networkaddress.cache.ttl=-1/networkaddress.cache.ttl=1/g" /usr/lib/jvm/java-8-oracle/jre/lib/security/java.security
 
 WORKDIR /tmp
 

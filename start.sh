@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # If a ZooKeeper container is linked with the alias `zookeeper`, use it.
 # You MUST set ZOOKEEPER_IP in env otherwise.
@@ -53,4 +53,4 @@ if [ -z $KAFKA_JMX_OPTS ]; then
 fi
 
 echo "Starting kafka"
-exec /kafka/bin/kafka-server-start.sh /kafka/config/server.properties
+sh -c "/kafka/bin/kafka-server-start.sh /kafka/config/server.properties"

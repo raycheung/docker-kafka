@@ -102,25 +102,14 @@ with their default values, if any:
 
   Maps to Kafka's `broker.id` setting. Must be a unique integer for each broker
   in a cluster.
-- `KAFKA_PORT=9092`
+- `KAFKA_ADVERTISED_LISTENERS=<listener list of container's IP within docker0's subnet>`
 
-  Maps to Kafka's `port` setting. The port that the broker service listens on.
-  You will need to explicitly publish a new port from container instances if you
-  change this.
-- `KAFKA_ADVERTISED_HOST_NAME=<container's IP within docker0's subnet>`
-
-  Maps to Kafka's `advertised.host.name` setting. Kafka brokers gossip the list
+  Maps to Kafka's `advertised.listeners` setting. Kafka brokers gossip the list
   of brokers in the cluster to relieve producers from depending on a ZooKeeper
   library. This setting should reflect the address at which producers can reach
   the broker on the network, i.e. if you build a cluster consisting of multiple
   physical Docker hosts, you will need to set this to the hostname of the Docker
-  *host's* interface where you forward the container `KAFKA_PORT`.
-- `KAFKA_ADVERTISED_PORT=9092`
-
-  As above, for the port part of the advertised address. Maps to Kafka's
-  `advertised.port` setting. If you run multiple broker containers on a single
-  Docker host and need them to be accessible externally, this should be set to
-  the port that you forward to on the Docker host.
+  *host's* interface where you forward the container port.
 - `KAFKA_DEFAULT_REPLICATION_FACTOR=1`
 
   Maps to Kafka's `default.replication.factor` setting. The default replication
@@ -129,21 +118,6 @@ with their default values, if any:
 
   Maps to Kafka's `num.partitions` setting. The default number of log partitions
   per topic.
-- `KAFKA_AUTO_CREATE_TOPICS_ENABLE=true`
-
-  Maps to Kafka's `auto.create.topics.enable`.
-- `KAFKA_DELETE_TOPIC_ENABLE=false`
-
-  Maps to Kafkas `delete.topic.enable`.
-- `KAFKA_INTER_BROKER_PROTOCOL_VERSION`
-
-  Maps to Kafka's `inter.broker.protocol.version`. If you have a cluster that
-  runs brokers with different Kafka versions make sure they communicate with
-  the same protocol version.
-- `KAFKA_LOG_MESSAGE_FORMAT_VERSION`
-
-  Maps to Kafka's `log.message.format.version`. Specifies the protocol version
-  with which your cluster communicates with its consumers.
 - `KAFKA_LOG_RETENTION_HOURS=168`
 
   Maps to Kafka's `log.retention.hours`. The number of hours to keep a log file
@@ -167,14 +141,6 @@ with their default values, if any:
 
   Set a string with host:port pairs for connecting to a ZooKeeper Cluster. This
   setting overrides `ZOOKEEPER_IP` and `ZOOKEEPER_PORT`.
-- `ZOOKEEPER_CHROOT`, ex: `/v0_8_1`
-
-  ZooKeeper root path used in constructing Kafka's `zookeeper.connect` setting.
-  This is blank by default, which means Kafka will use the ZK `/`. You should
-  set this if the ZK instance/cluster is shared by other services, or to
-  accommodate Kafka upgrades that change schema. Starting in Kafka 0.8.2, it
-  will create the path in ZK automatically; with earlier versions, you must
-  ensure it is created before starting brokers.
 
 JMX
 ---

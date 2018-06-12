@@ -1,12 +1,12 @@
 FROM spoud/oraclejdk:8
 LABEL maintainer="Ray Cheung <dev@masking.work>"
 
-ENV KAFKA_VERSION=1.0.1 KAFKA_SCALA_VERSION=2.12 JMX_PORT=7203
+ENV KAFKA_VERSION=1.1.0 KAFKA_SCALA_VERSION=2.12 JMX_PORT=7203
 ENV KAFKA_RELEASE_ARCHIVE kafka_${KAFKA_SCALA_VERSION}-${KAFKA_VERSION}.tgz
 
 RUN mkdir /kafka /data /logs
 
-ADD http://www.eu.apache.org/dist/kafka/${KAFKA_VERSION}/${KAFKA_RELEASE_ARCHIVE} /tmp/
+ADD http://www-us.apache.org/dist/kafka/${KAFKA_VERSION}/${KAFKA_RELEASE_ARCHIVE} /tmp/
 ADD https://dist.apache.org/repos/dist/release/kafka/${KAFKA_VERSION}/${KAFKA_RELEASE_ARCHIVE}.md5 /tmp/
 
 WORKDIR /tmp

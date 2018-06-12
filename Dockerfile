@@ -1,5 +1,5 @@
 FROM spoud/oraclejdk:8
-LABEL maintainer="Benny Gaechter <benny.gaechter@gmail.com>"
+LABEL maintainer="Ray Cheung <dev@masking.work>"
 
 ENV KAFKA_VERSION=1.0.1 KAFKA_SCALA_VERSION=2.12 JMX_PORT=7203
 ENV KAFKA_RELEASE_ARCHIVE kafka_${KAFKA_SCALA_VERSION}-${KAFKA_VERSION}.tgz
@@ -29,5 +29,3 @@ EXPOSE 9092 ${JMX_PORT}
 VOLUME [ "/data", "/logs" ]
 
 CMD ["/start.sh"]
-
-

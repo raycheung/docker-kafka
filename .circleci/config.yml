@@ -1,0 +1,41 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: docker:latest
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --no-cache py-pip jq
+            pip install awscli
+      - restore_cache:
+          keys:
+            - docker-{{ .Branch }}-{{ checksum "Dockerfile" }}
+            - docker-{{ .Branch }}
+      - run:
+          command: |
+            set +o pipefail
+            docker load -i /caches/docker.tar | true
+      - run: docker build -t kafka:latest --label build=$CIRCLE_SHA1 .
+      - run:
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/docker.tar kafka
+      - save_cache:
+          paths:
+            - /caches/docker.tar
+          key: docker-{{ .Branch }}-{{ checksum "Dockerfile" }}
+      - run:
+          command: |
+            eval "$(aws ecr get-login --no-include-email)"
+            eval "repo=$(aws ecr describe-repositories --repository-names kafka | jq '.repositories[0].repositoryUri')"
+            docker tag kafka:latest $repo:latest
+            docker push $repo:latest
+      - save_cache:
+          paths:
+            - /caches/docker.tar
+          key: docker-{{ .Branch }}

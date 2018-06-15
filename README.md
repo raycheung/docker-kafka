@@ -53,7 +53,7 @@ The container exposes two volumes that you may wish to bind-mount, or process
 elsewhere with `--volumes-from`:
 
 - `/data`: Path where Kafka's data is stored (`log.dirs` in Kafka configuration)
-- `/logs`: Path where Kafka's logs (`INFO` level) will be written, via log4j
+- `/kafka/logs`: Path where Kafka's logs (`INFO` level) will be written, via log4j
 
 ### Ports and Linking
 
@@ -85,7 +85,7 @@ $ docker run -d --name zookeeper --publish 2181:2181 zookeeper:3.4
 $ docker run -d \
     --hostname localhost \
     --name kafka \
-    --volume ./data:/data --volume ./logs:/logs \
+    --volume ./data:/data --volume ./logs:/kafka/logs \
     --publish 9092:9092 --publish 7203:7203 \
     --env KAFKA_ADVERTISED_HOST_NAME=127.0.0.1 --env ZOOKEEPER_IP=127.0.0.1 \
     raycheung/kafka

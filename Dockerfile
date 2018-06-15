@@ -4,7 +4,7 @@ LABEL maintainer="Ray Cheung <dev@masking.work>"
 ENV KAFKA_VERSION=1.1.0 KAFKA_SCALA_VERSION=2.12 JMX_PORT=7203
 ENV KAFKA_RELEASE_ARCHIVE kafka_${KAFKA_SCALA_VERSION}-${KAFKA_VERSION}.tgz
 
-RUN mkdir /kafka /data /logs
+RUN mkdir /kafka /data
 
 ADD http://www-us.apache.org/dist/kafka/${KAFKA_VERSION}/${KAFKA_RELEASE_ARCHIVE} /tmp/
 ADD https://dist.apache.org/repos/dist/release/kafka/${KAFKA_VERSION}/${KAFKA_RELEASE_ARCHIVE}.md5 /tmp/
@@ -28,6 +28,6 @@ ENV PATH /kafka/bin:$PATH
 WORKDIR /kafka
 
 EXPOSE 9092 ${JMX_PORT}
-VOLUME [ "/data", "/logs" ]
+VOLUME [ "/data", "/kafka/logs" ]
 
 CMD ["/start.sh"]

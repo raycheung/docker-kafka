@@ -150,7 +150,7 @@ container tries to make it as painless as possible, but it's important to
 understand that if you want to connect a client like VisualVM from outside other
 Docker containers (e.g. directly from your host OS in development), then you'll
 need to configure RMI to be addressed *as the Docker host IP or hostname*. If
-you have set `KAFKA_ADVERTISED_HOST_NAME`, that value will be used and is
+you have set `KAFKA_ADVERTISED_LISTENERS`, that value will be used and is
 probably what you want. If not (you're only using other containers to talk to
 Kafka brokers) or you need to override it for some reason, then you can instead
 set `JAVA_RMI_SERVER_HOSTNAME`.

@@ -34,13 +34,16 @@ cat /kafka/config/templates/server.properties | sed \
 # hosts running in a VM with Docker Machine, etc. See:
 #
 # https://issues.apache.org/jira/browse/CASSANDRA-7087
+#
+# NOTE: it needs a tailing whitespace in the string
 if [ -z $KAFKA_JMX_OPTS ]; then
-    KAFKA_JMX_OPTS="-Dcom.sun.management.jmxremote=true"
-    KAFKA_JMX_OPTS="$KAFKA_JMX_OPTS -Dcom.sun.management.jmxremote.authenticate=false"
-    KAFKA_JMX_OPTS="$KAFKA_JMX_OPTS -Dcom.sun.management.jmxremote.ssl=false"
-    KAFKA_JMX_OPTS="$KAFKA_JMX_OPTS -Dcom.sun.management.jmxremote.rmi.port=$JMX_PORT"
-    KAFKA_JMX_OPTS="$KAFKA_JMX_OPTS -Djava.rmi.server.hostname=${JAVA_RMI_SERVER_HOSTNAME:-$KAFKA_ADVERTISED_HOST_NAME} "
-    export KAFKA_JMX_OPTS
+  JMX_IP=$(echo ${KAFKA_ADVERTISED_LISTENERS} | grep -o '[0-9]\+[.][0-9]\+[.][0-9]\+[.][0-9]\+')
+  KAFKA_JMX_OPTS="-Dcom.sun.management.jmxremote"
+  KAFKA_JMX_OPTS="$KAFKA_JMX_OPTS -Dcom.sun.management.jmxremote.authenticate=false"
+  KAFKA_JMX_OPTS="$KAFKA_JMX_OPTS -Dcom.sun.management.jmxremote.ssl=false"
+  KAFKA_JMX_OPTS="$KAFKA_JMX_OPTS -Dcom.sun.management.jmxremote.rmi.port=$JMX_PORT"
+  KAFKA_JMX_OPTS="$KAFKA_JMX_OPTS -Djava.rmi.server.hostname=${JAVA_RMI_SERVER_HOSTNAME:-$JMX_IP} "
+  export KAFKA_JMX_OPTS
 fi
 
 echo "Starting kafka"

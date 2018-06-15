@@ -1,4 +1,4 @@
-FROM spoud/oraclejdk:8
+FROM openjdk:8-alpine
 LABEL maintainer="Ray Cheung <dev@masking.work>"
 
 ENV KAFKA_VERSION=1.1.0 KAFKA_SCALA_VERSION=2.12 JMX_PORT=7203
@@ -10,6 +10,8 @@ ADD http://www-us.apache.org/dist/kafka/${KAFKA_VERSION}/${KAFKA_RELEASE_ARCHIVE
 ADD https://dist.apache.org/repos/dist/release/kafka/${KAFKA_VERSION}/${KAFKA_RELEASE_ARCHIVE}.md5 /tmp/
 
 WORKDIR /tmp
+
+RUN apk add --no-cache gnupg
 
 RUN echo VERIFY CHECKSUM: && \
   gpg --print-md MD5 ${KAFKA_RELEASE_ARCHIVE} 2>/dev/null && \
